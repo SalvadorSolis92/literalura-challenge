@@ -14,7 +14,6 @@ public class Principal {
     public  Principal(LibrosRepository repository){
         this.repository = repository;
     }
-}
 
     public void muestraElMenu() {
         var opcion = -1;
@@ -36,5 +35,8 @@ public class Principal {
                 default:
                     System.out.println("Opción inválida");
             }
+        }
     }
+
 }
+
