@@ -2,21 +2,27 @@ package com.aluracursos.literalura.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "persona")
-public class Persona {
+public class Persona implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_persona")
     private Long idPersona;
 
+    @Column(name = "fecha_cumpleanios")
     private int fechaCumpleanios;
 
+    @Column(name = "fecha_defuncion")
     private int fechaDefuncion;
 
+    @Column(name = "nombre")
     private String nombre;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Libros libro;
 
     public Persona() {

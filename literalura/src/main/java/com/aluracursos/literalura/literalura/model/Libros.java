@@ -2,35 +2,46 @@ package com.aluracursos.literalura.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "libros")
-public class Libros {
+public class Libros implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_libro")
     private Long idLibro;
 
+    @Column(name = "titulo")
     private String titulo;
 
+    @Column(name = "subtitulos")
     private List<String> subtitulos;
 
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Persona> autores;
 
-    private List<Persona> traductores;
+    //@OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //private List<Persona> traductores;
 
+    @Column(name = "estanteria")
     private List<String> estanteria;
 
+    @Column(name = "lenguajes")
     private List<String> lenguajes;
 
+    @Column(name = "copyright")
     private boolean copyright;
 
+    @Column(name = "mediaType")
     private String mediaType;
 
+    @JoinColumn(name = "libro_id_formato", referencedColumnName = "id_formato")
     private Formato formatos;
 
+    @Column(name = "conteo_descargas")
     private Long conteoDescargas;
 
     public Libros() {
@@ -69,13 +80,13 @@ public class Libros {
         this.autores = autores;
     }
 
-    public List<Persona> getTraductores() {
-        return traductores;
-    }
-
-    public void setTraductores(List<Persona> traductores) {
-        this.traductores = traductores;
-    }
+//    public List<Persona> getTraductores() {
+//        return traductores;
+//    }
+//
+//    public void setTraductores(List<Persona> traductores) {
+//        this.traductores = traductores;
+//    }
 
     public List<String> getEstanteria() {
         return estanteria;

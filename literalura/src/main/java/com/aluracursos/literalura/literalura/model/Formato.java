@@ -2,16 +2,21 @@ package com.aluracursos.literalura.literalura.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "formato")
-public class Formato {
+public class Formato implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_formato")
     private Long idFormato;
 
+    @Column(name = "url")
     private String url;
 
+    @JoinColumn(name = "formato_id_libro", referencedColumnName = "id_libro")
     private Libros libro;
 
     public Formato() {
