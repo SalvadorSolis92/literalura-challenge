@@ -21,8 +21,7 @@ public class ClientHttp {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            //throw new RuntimeException(e);
-            System.err.println(e);
+            throw new RuntimeException(e);
         }
         System.err.println(response);
         String json = response.body();
