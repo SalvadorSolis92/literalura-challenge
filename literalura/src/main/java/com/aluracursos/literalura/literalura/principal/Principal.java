@@ -1,11 +1,16 @@
 package com.aluracursos.literalura.literalura.principal;
 
 import com.aluracursos.literalura.literalura.repository.LibrosRepository;
+import com.aluracursos.literalura.literalura.service.ClientHttp;
 
 import java.util.Scanner;
 
 public class Principal {
 
+    //Cliente http
+    private ClientHttp client = new ClientHttp();
+    //liga api
+    private final String URL_BASE = "https://gutendex.com";
     //entrada desde consola
     private Scanner teclado = new Scanner(System.in);
 
@@ -33,13 +38,24 @@ public class Principal {
 
             switch (opcion) {
                 case 1:
-
+                    this.buscarLibroPorTitulo();
                     break;
 
                 default:
                     System.out.println("Opción inválida");
             }
         }
+    }
+
+    private void buscarLibroPorTitulo(){
+        System.out.println("Escribe el titulo del libro que deseas buscar");
+        var tituloSearch = teclado.nextLine();
+        var json = client.obtenerDatos(URL_BASE + "/books/?search=" + tituloSearch.replace(" ", "%20"));
+
+        System.err.println("url     " + URL_BASE + "/books?search=" + tituloSearch.replace(" ", "%20") );
+        System.out.println(json);
+
+
     }
 
 }

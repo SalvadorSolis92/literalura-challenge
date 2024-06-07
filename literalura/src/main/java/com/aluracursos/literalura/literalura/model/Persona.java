@@ -14,11 +14,11 @@ public class Persona implements Serializable {
     @Column(name = "id_persona")
     private Long idPersona;
 
-    @Column(name = "fecha_cumpleanios")
-    private int fechaCumpleanios;
+    @Column(name = "anio_nacimiento")
+    private int anioNacimiento;
 
-    @Column(name = "fecha_defuncion")
-    private int fechaDefuncion;
+    @Column(name = "anio_defuncion")
+    private int anioDefuncion;
 
     @Column(name = "nombre")
     private String nombre;
@@ -40,20 +40,20 @@ public class Persona implements Serializable {
         this.idPersona = idPersona;
     }
 
-    public int getFechaCumpleanios() {
-        return fechaCumpleanios;
+    public int getAnioNacimiento() {
+        return anioNacimiento;
     }
 
-    public void setFechaCumpleanios(int fechaCumpleanios) {
-        this.fechaCumpleanios = fechaCumpleanios;
+    public void setAnioNacimiento(int anioNacimiento) {
+        this.anioNacimiento = anioNacimiento;
     }
 
-    public int getFechaDefuncion() {
-        return fechaDefuncion;
+    public int getAnioDefuncion() {
+        return anioDefuncion;
     }
 
-    public void setFechaDefuncion(int fechaDefuncion) {
-        this.fechaDefuncion = fechaDefuncion;
+    public void setAnioDefuncion(int anioDefuncion) {
+        this.anioDefuncion = anioDefuncion;
     }
 
     public String getNombre() {
