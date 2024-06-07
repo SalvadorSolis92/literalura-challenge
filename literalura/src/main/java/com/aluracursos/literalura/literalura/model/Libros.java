@@ -20,11 +20,21 @@ public class Libros implements Serializable {
     @Column(name = "subtitulos")
     private List<String> subtitulos;
 
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany
+    @JoinTable(
+            name = "libro_autor",
+            joinColumns = @JoinColumn(name = "id_libro"),
+            inverseJoinColumns = @JoinColumn(name = "id_persona")
+    )
     private List<Persona> autores;
 
-    //@OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //private List<Persona> traductores;
+    @ManyToMany
+    @JoinTable(
+            name = "libro_traductor",
+            joinColumns = @JoinColumn(name = "id_libro"),
+            inverseJoinColumns = @JoinColumn(name = "id_persona")
+    )
+    private List<Persona> traductores;
 
     @Column(name = "estanteria")
     private List<String> estanteria;
@@ -38,8 +48,8 @@ public class Libros implements Serializable {
     @Column(name = "mediaType")
     private String mediaType;
 
-    @JoinColumn(name = "libro_id_formato", referencedColumnName = "id_formato")
-    private Formato formatos;
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Formato> formatos;
 
     @Column(name = "conteo_descargas")
     private Long conteoDescargas;
@@ -80,13 +90,13 @@ public class Libros implements Serializable {
         this.autores = autores;
     }
 
-//    public List<Persona> getTraductores() {
-//        return traductores;
-//    }
-//
-//    public void setTraductores(List<Persona> traductores) {
-//        this.traductores = traductores;
-//    }
+    public List<Persona> getTraductores() {
+        return traductores;
+    }
+
+    public void setTraductores(List<Persona> traductores) {
+        this.traductores = traductores;
+    }
 
     public List<String> getEstanteria() {
         return estanteria;
@@ -120,11 +130,11 @@ public class Libros implements Serializable {
         this.mediaType = mediaType;
     }
 
-    public Formato getFormatos() {
+    public List<Formato> getFormatos() {
         return formatos;
     }
 
-    public void setFormatos(Formato formatos) {
+    public void setFormatos(List<Formato> formatos) {
         this.formatos = formatos;
     }
 

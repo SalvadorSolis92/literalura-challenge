@@ -3,6 +3,7 @@ package com.aluracursos.literalura.literalura.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "persona")
@@ -22,8 +23,11 @@ public class Persona implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-    @ManyToOne(optional = false)
-    private Libros libro;
+    @ManyToMany(mappedBy = "autores")
+    private List<Libros> librosComoAutor;
+
+    @ManyToMany(mappedBy = "traductores")
+    private List<Libros> librosComoTraductor;
 
     public Persona() {
     }
@@ -60,11 +64,19 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
-    public Libros getLibro() {
-        return libro;
+    public List<Libros> getLibrosComoAutor() {
+        return librosComoAutor;
     }
 
-    public void setLibro(Libros libro) {
-        this.libro = libro;
+    public void setLibrosComoAutor(List<Libros> librosComoAutor) {
+        this.librosComoAutor = librosComoAutor;
+    }
+
+    public List<Libros> getLibrosComoTraductor() {
+        return librosComoTraductor;
+    }
+
+    public void setLibrosComoTraductor(List<Libros> librosComoTraductor) {
+        this.librosComoTraductor = librosComoTraductor;
     }
 }
