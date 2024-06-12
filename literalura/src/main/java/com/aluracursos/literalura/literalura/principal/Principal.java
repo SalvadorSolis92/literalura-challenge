@@ -1,6 +1,7 @@
 package com.aluracursos.literalura.literalura.principal;
 
 import com.aluracursos.literalura.literalura.model.DatosBusqueda;
+import com.aluracursos.literalura.literalura.model.Libros;
 import com.aluracursos.literalura.literalura.repository.LibrosRepository;
 import com.aluracursos.literalura.literalura.service.ClientHttp;
 import com.aluracursos.literalura.literalura.util.ConvierteDatos;
@@ -65,6 +66,8 @@ public class Principal {
 
         if(librosEncontrados != null){
             System.out.println("se encontro con exito");
+            librosEncontrados.libros().stream().forEach(l -> new Libros(l));
+
         }else{
             System.out.println("error en busqueda");
         }

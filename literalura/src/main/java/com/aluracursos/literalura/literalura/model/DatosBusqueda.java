@@ -7,7 +7,7 @@ import java.util.List;
 public record DatosBusqueda(
         @JsonAlias("count") Long numResultados,
         @JsonAlias("next") String siguiente,
-        @JsonAlias("previous") String previo
-        //@JsonAlias("results") List<DatosLibro> libros
+        @JsonAlias("previous") String previo,
+        @JsonAlias("results") List<DatosLibro> libros
 ) {
 }

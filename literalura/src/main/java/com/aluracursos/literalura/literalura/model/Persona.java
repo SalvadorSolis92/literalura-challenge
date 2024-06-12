@@ -23,12 +23,6 @@ public class Persona implements Serializable {
     @Column(name = "nombre")
     private String nombre;
 
-    @ManyToMany(mappedBy = "autores")
-    private List<Libros> librosComoAutor;
-
-    @ManyToMany(mappedBy = "traductores")
-    private List<Libros> librosComoTraductor;
-
     public Persona() {
     }
 
@@ -64,19 +58,4 @@ public class Persona implements Serializable {
         this.nombre = nombre;
     }
 
-    public List<Libros> getLibrosComoAutor() {
-        return librosComoAutor;
-    }
-
-    public void setLibrosComoAutor(List<Libros> librosComoAutor) {
-        this.librosComoAutor = librosComoAutor;
-    }
-
-    public List<Libros> getLibrosComoTraductor() {
-        return librosComoTraductor;
-    }
-
-    public void setLibrosComoTraductor(List<Libros> librosComoTraductor) {
-        this.librosComoTraductor = librosComoTraductor;
-    }
 }

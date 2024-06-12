@@ -3,7 +3,9 @@ package com.aluracursos.literalura.literalura.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "libros")
@@ -20,21 +22,11 @@ public class Libros implements Serializable {
     @Column(name = "subtitulos")
     private List<String> subtitulos;
 
-    @ManyToMany
-    @JoinTable(
-            name = "libro_autor",
-            joinColumns = @JoinColumn(name = "id_libro"),
-            inverseJoinColumns = @JoinColumn(name = "id_persona")
-    )
-    private List<Persona> autores;
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Autor> autores;
 
-    @ManyToMany
-    @JoinTable(
-            name = "libro_traductor",
-            joinColumns = @JoinColumn(name = "id_libro"),
-            inverseJoinColumns = @JoinColumn(name = "id_persona")
-    )
-    private List<Persona> traductores;
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Traductor> traductores;
 
     @Column(name = "estanteria")
     private List<String> estanteria;
@@ -56,6 +48,27 @@ public class Libros implements Serializable {
 
     public Libros() {
 
+    }
+
+    public Libros(DatosLibro datosLibro){
+        this.titulo = datosLibro.titulo();
+        this.subtitulos = datosLibro.subtitulos();
+        this.autores = datosLibro.autores().stream()
+                .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion()))
+                .collect(Collectors.toList());
+
+        this.traductores = datosLibro.traductores().stream()
+                .map(t -> new Traductor(t.nombre(), t.anioNacimiento(), t.anioDefuncion()))
+                .collect(Collectors.toList());
+
+        this.estanteria = datosLibro.estanterias();
+        this.lenguajes = datosLibro.idiomas();
+        this.copyright = datosLibro.copyright();
+        this.mediaType = datosLibro.mediaType();
+
+        this.formatos = datosLibro.formatos().stream().
+                map( f -> new Formato(f.mimeType(), f.url()))
+                .collect(Collectors.toList());
     }
 
     public Long getIdLibro() {
@@ -82,19 +95,19 @@ public class Libros implements Serializable {
         this.subtitulos = subtitulos;
     }
 
-    public List<Persona> getAutores() {
+    public List<Autor> getAutores() {
         return autores;
     }
 
-    public void setAutores(List<Persona> autores) {
+    public void setAutores(List<Autor> autores) {
         this.autores = autores;
     }
 
-    public List<Persona> getTraductores() {
+    public List<Traductor> getTraductores() {
         return traductores;
     }
 
-    public void setTraductores(List<Persona> traductores) {
+    public void setTraductores(List<Traductor> traductores) {
         this.traductores = traductores;
     }
 

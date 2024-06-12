@@ -25,6 +25,11 @@ public class Formato implements Serializable {
     public Formato() {
     }
 
+    public Formato(String mimeType, String url) {
+        this.mimeType = mimeType;
+        this.ulr = url;
+    }
+
     public Long getIdFormato() {
         return idFormato;
     }
