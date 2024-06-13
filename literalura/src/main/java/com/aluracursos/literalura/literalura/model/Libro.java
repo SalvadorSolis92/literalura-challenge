@@ -3,15 +3,12 @@ package com.aluracursos.literalura.literalura.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "libros")
-public class Libros implements Serializable {
+public class Libro implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +23,6 @@ public class Libros implements Serializable {
 
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Autor> autores;
-
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Traductor> traductores;
 
     @Column(name = "estanteria")
     private List<String> estanteria;
@@ -48,17 +42,18 @@ public class Libros implements Serializable {
     @Column(name = "conteo_descargas")
     private Long conteoDescargas;
 
-    public Libros() {
+    public Libro() {
 
     }
 
-    public Libros(DatosLibro datosLibro){
+    public Libro(DatosLibro datosLibro){
         this.titulo = datosLibro.titulo();
         this.subtitulos = datosLibro.subtitulos();
         this.estanteria = datosLibro.estanterias();
         this.lenguajes = datosLibro.idiomas();
         this.copyright = datosLibro.copyright();
         this.mediaType = datosLibro.mediaType();
+        this.conteoDescargas = datosLibro.conteoDescargas() != null ? datosLibro.conteoDescargas() : 0;
     }
 
     public Long getIdLibro() {
@@ -91,14 +86,6 @@ public class Libros implements Serializable {
 
     public void setAutores(List<Autor> autores) {
         this.autores = autores;
-    }
-
-    public List<Traductor> getTraductores() {
-        return traductores;
-    }
-
-    public void setTraductores(List<Traductor> traductores) {
-        this.traductores = traductores;
     }
 
     public List<String> getEstanteria() {
@@ -147,5 +134,19 @@ public class Libros implements Serializable {
 
     public void setConteoDescargas(Long conteoDescargas) {
         this.conteoDescargas = conteoDescargas;
+    }
+
+    @Override
+    public String toString() {
+        return "------------------------------"
+                + "Titulo: " + this.titulo
+                + "\nIdiomas: " + this.lenguajes.stream().collect(Collectors.joining(", "))
+                + "\nAutores: " + this.autores.stream().map(Autor::toString).collect(Collectors.joining(", "))
+                + "\nEstanteria: " + this.estanteria.stream().collect(Collectors.joining(", "))
+                + "\nCopyright: " + copyright
+                + "\nMedia Type: " + mediaType
+                + "\nformatos: " + formatos
+                + "\nConteo de descargas: " + conteoDescargas
+                + "\n------------------------------------------------------------\n\n";
     }
 }

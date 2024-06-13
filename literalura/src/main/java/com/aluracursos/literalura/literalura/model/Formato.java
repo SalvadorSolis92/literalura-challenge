@@ -21,7 +21,7 @@ public class Formato implements Serializable {
     private String ulr;
 
     @ManyToOne(optional = false)
-    private Libros libro;
+    private Libro libro;
 
     public Formato() {
     }
@@ -59,11 +59,11 @@ public class Formato implements Serializable {
         this.ulr = ulr;
     }
 
-    public Libros getLibro() {
+    public Libro getLibro() {
         return libro;
     }
 
-    public void setLibro(Libros libro) {
+    public void setLibro(Libro libro) {
         this.libro = libro;
     }
 }

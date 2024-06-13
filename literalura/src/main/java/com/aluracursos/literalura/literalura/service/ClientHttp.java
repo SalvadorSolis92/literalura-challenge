@@ -25,7 +25,7 @@ public class ClientHttp {
         }
         System.err.println(response);
         String json = response.body();
-
+        System.out.println(json);
         return json;
     }
 }

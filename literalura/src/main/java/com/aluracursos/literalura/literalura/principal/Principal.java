@@ -1,10 +1,12 @@
 package com.aluracursos.literalura.literalura.principal;
 
 import com.aluracursos.literalura.literalura.model.*;
+import com.aluracursos.literalura.literalura.repository.AutoresRepostory;
 import com.aluracursos.literalura.literalura.repository.LibrosRepository;
 import com.aluracursos.literalura.literalura.service.ClientHttp;
 import com.aluracursos.literalura.literalura.util.ConvierteDatos;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -21,15 +23,18 @@ public class Principal {
     private ConvierteDatos conversor = new ConvierteDatos();
 
     private LibrosRepository repository;
+    private AutoresRepostory repostoryAutores;
 
-    public  Principal(LibrosRepository repository){
+    public  Principal(LibrosRepository repository, AutoresRepostory autoresRepostory){
         this.repository = repository;
+        this.repostoryAutores = autoresRepostory;
     }
 
     public void muestraElMenu() {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
+                     (っ◕‿◕)っ Bienvenido
                     1 - Buscar libro por titulo
                     2 - Listar libros registrados
                     3 - Listar autores registrados
@@ -39,18 +44,63 @@ public class Principal {
                     
                     """;
             System.out.println(menu);
-            opcion = teclado.nextInt();
-            teclado.nextLine();
+            try {
+                opcion = teclado.nextInt();
+                teclado.nextLine();
+            }catch (Exception e){
+                opcion = 0;
+                System.err.println("Error al ingresar opción, intenta otra vez");
+            }
+
 
             switch (opcion) {
                 case 1:
                     this.buscarLibroPorTitulo();
                     break;
-
+                case 2:
+                    this.mostrarLibrosRegistrados();
+                    break;
+                case 0:
+                    mensajeDespedida();
+                    break;
                 default:
-                    System.out.println("Opción inválida");
+                    mensajeOpcionInvalida();
             }
         }
+    }
+
+
+    private void mensajeOpcionInvalida(){
+        String error = """
+                            
+                            
+                            (˘_˘٥) Opción invalida, intenta con una opción del ménu
+                            
+                            
+                            
+                            """;
+        System.out.println(error);
+    }
+
+    private void mensajeDespedida(){
+        String osito = """
+                            ───▄▀▀▀▄▄▄▄▄▄▄▀▀▀▄───
+                            ───█▒▒░░░░░░░░░▒▒█───
+                            ────█░░█░░░░░█░░█────
+                            ─▄▄──█░░░▀█▀░░░█──▄▄─
+                            █░░█─▀▄░░░░░░░▄▀─█░░█
+                            █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+                            ______           \s
+                            | ___ \\          \s
+                            | |_/ /_   _  ___\s
+                            | ___ \\ | | |/ _ \\
+                            | |_/ / |_| |  __/
+                            \\____/ \\__, |\\___|
+                                    __/ |    \s
+                                   |___/
+                            █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+                            """;
+        System.out.println(osito);
     }
 
     private DatosBusqueda obtenerDatosPorTitulo(){
@@ -64,38 +114,30 @@ public class Principal {
     private void buscarLibroPorTitulo(){
         DatosBusqueda librosEncontrados = obtenerDatosPorTitulo();
 
-        if(librosEncontrados != null){
-            System.out.println("se encontro con exito");
-
+        if(librosEncontrados.numResultados() > 0){
             for (DatosLibro datos : librosEncontrados.libros()){
-                Libros libro = this.repository.save(new Libros(datos));
-
-                List<Autor> autores = librosEncontrados.libros().stream()
-                        .flatMap(l -> l.autores().stream()
-                                .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion())))
+                //Datos del libro
+                Libro libro = this.repository.save(new Libro(datos));
+                //Datos de autores
+                List<Autor> autores = datos.autores().stream()
+                        .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion()))
                         .collect(Collectors.toList());
-
-                List<Traductor> traductores = librosEncontrados.libros().stream()
-                        .flatMap(l -> l.traductores().stream()
-                                .map(a -> new Traductor(a.nombre(), a.anioNacimiento(), a.anioDefuncion())))
-                        .collect(Collectors.toList());
-
-//                List<Formato> formatos = librosEncontrados.libros().stream()
-//                                .flatMap(l -> l.formatos().entrySet().stream()
-//                                        .map(f -> new Formato(f)))
-//                                        .collect(Collectors.toList());
-
-                libro.setAutores(autores);
-                libro.setTraductores(traductores);
-//                libro.setFormatos(formatos);
-
-                this.repository.save(libro);
+                autores.forEach(a -> a.setLibro(libro));//relacionar el autor con el libro
+                autores.forEach(a -> this.repostoryAutores.save(a));//guardar datos del autor
             }
 
         }else{
-            System.out.println("error en busqueda");
+            System.out.println("No se encontrarón resultados, prueba con otro titulo");
         }
 
+    }
+
+    private void mostrarLibrosRegistrados() {
+        List<Libro> librosRegistrados = this.repository.findAll();
+
+        librosRegistrados.stream()
+                .sorted(Comparator.comparing(Libro::getTitulo))
+                .forEach(System.out::println);
     }
 
 }

@@ -1,32 +1,77 @@
 package com.aluracursos.literalura.literalura.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class Autor extends Persona {
+public class Autor{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_autor")
+    private Long idAutor;
+    private String nombre;
+    private int anioNacimiento;
+    private int anioDefuncion;
 
     @ManyToOne
-    private Libros libro;
+    @JoinColumn(name = "libro_id")
+    private Libro libro;
 
     public Autor() {
     }
 
     public Autor(String nombre, int anioNacimiento, int anioDefuncion) {
-        this.setNombre(nombre);
-        this.setAnioNacimiento(anioNacimiento);
-        this.setAnioDefuncion(anioDefuncion);
+        this.nombre = nombre;
+        this.anioNacimiento = anioNacimiento;
+        this.anioDefuncion = anioDefuncion;
     }
 
-    public Libros getLibro() {
+    public int getAnioDefuncion() {
+        return anioDefuncion;
+    }
+
+    public void setAnioDefuncion(int anioDefuncion) {
+        this.anioDefuncion = anioDefuncion;
+    }
+
+    public int getAnioNacimiento() {
+        return anioNacimiento;
+    }
+
+    public void setAnioNacimiento(int anioNacimiento) {
+        this.anioNacimiento = anioNacimiento;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Long getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(Long idAutor) {
+        this.idAutor = idAutor;
+    }
+
+    public Libro getLibro() {
         return libro;
     }
 
-    public void setLibro(Libros libro) {
+    public void setLibro(Libro libro) {
         this.libro = libro;
+    }
+
+    @Override
+    public String toString() {
+        return  "\n\t" + this.nombre
+                + "\n\tAño nacimiento: " + this.anioNacimiento
+                + "\n\tAño defunción: " + this.anioDefuncion;
     }
 }

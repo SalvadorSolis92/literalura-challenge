@@ -11,7 +11,6 @@ public record DatosLibro(
         @JsonAlias("id") Long idLibro,
         @JsonAlias("title") String titulo,
         @JsonAlias("authors") List<DatosAutor> autores,
-        @JsonAlias("translators") List<DatoTraductor> traductores,
         @JsonAlias("subjects") List<String> subtitulos,
         @JsonAlias("bookshelves") List<String> estanterias,
         @JsonAlias("languages") List<String> idiomas,
