@@ -3,8 +3,10 @@ package com.aluracursos.literalura.literalura.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
@@ -53,22 +55,10 @@ public class Libros implements Serializable {
     public Libros(DatosLibro datosLibro){
         this.titulo = datosLibro.titulo();
         this.subtitulos = datosLibro.subtitulos();
-        this.autores = datosLibro.autores().stream()
-                .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion()))
-                .collect(Collectors.toList());
-
-        this.traductores = datosLibro.traductores().stream()
-                .map(t -> new Traductor(t.nombre(), t.anioNacimiento(), t.anioDefuncion()))
-                .collect(Collectors.toList());
-
         this.estanteria = datosLibro.estanterias();
         this.lenguajes = datosLibro.idiomas();
         this.copyright = datosLibro.copyright();
         this.mediaType = datosLibro.mediaType();
-
-        this.formatos = datosLibro.formatos().stream().
-                map( f -> new Formato(f.mimeType(), f.url()))
-                .collect(Collectors.toList());
     }
 
     public Long getIdLibro() {

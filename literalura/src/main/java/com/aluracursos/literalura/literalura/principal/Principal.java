@@ -1,13 +1,13 @@
 package com.aluracursos.literalura.literalura.principal;
 
-import com.aluracursos.literalura.literalura.model.DatosBusqueda;
-import com.aluracursos.literalura.literalura.model.Libros;
+import com.aluracursos.literalura.literalura.model.*;
 import com.aluracursos.literalura.literalura.repository.LibrosRepository;
 import com.aluracursos.literalura.literalura.service.ClientHttp;
 import com.aluracursos.literalura.literalura.util.ConvierteDatos;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -66,7 +66,31 @@ public class Principal {
 
         if(librosEncontrados != null){
             System.out.println("se encontro con exito");
-            librosEncontrados.libros().stream().forEach(l -> new Libros(l));
+
+            for (DatosLibro datos : librosEncontrados.libros()){
+                Libros libro = this.repository.save(new Libros(datos));
+
+                List<Autor> autores = librosEncontrados.libros().stream()
+                        .flatMap(l -> l.autores().stream()
+                                .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion())))
+                        .collect(Collectors.toList());
+
+                List<Traductor> traductores = librosEncontrados.libros().stream()
+                        .flatMap(l -> l.traductores().stream()
+                                .map(a -> new Traductor(a.nombre(), a.anioNacimiento(), a.anioDefuncion())))
+                        .collect(Collectors.toList());
+
+//                List<Formato> formatos = librosEncontrados.libros().stream()
+//                                .flatMap(l -> l.formatos().entrySet().stream()
+//                                        .map(f -> new Formato(f)))
+//                                        .collect(Collectors.toList());
+
+                libro.setAutores(autores);
+                libro.setTraductores(traductores);
+//                libro.setFormatos(formatos);
+
+                this.repository.save(libro);
+            }
 
         }else{
             System.out.println("error en busqueda");

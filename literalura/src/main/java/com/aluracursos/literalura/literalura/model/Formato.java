@@ -3,6 +3,7 @@ package com.aluracursos.literalura.literalura.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @Entity
 @Table(name = "formato")
@@ -28,6 +29,10 @@ public class Formato implements Serializable {
     public Formato(String mimeType, String url) {
         this.mimeType = mimeType;
         this.ulr = url;
+    }
+
+    public Formato(Map.Entry<String, String> f) {
+
     }
 
     public Long getIdFormato() {

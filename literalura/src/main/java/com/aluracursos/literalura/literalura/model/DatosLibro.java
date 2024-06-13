@@ -17,7 +17,7 @@ public record DatosLibro(
         @JsonAlias("languages") List<String> idiomas,
         @JsonAlias("copyright") boolean copyright,
         @JsonAlias("media_type") String mediaType,
-        @JsonAlias("formats") List<DatosFormato> formatos,
+        @JsonAlias("formats") Map<String, String> formatos,
         @JsonAlias("download_count") Long conteoDescargas
 ) {
 }

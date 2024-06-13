@@ -13,6 +13,9 @@ public class Autor extends Persona {
     @ManyToOne
     private Libros libro;
 
+    public Autor() {
+    }
+
     public Autor(String nombre, int anioNacimiento, int anioDefuncion) {
         this.setNombre(nombre);
         this.setAnioNacimiento(anioNacimiento);
