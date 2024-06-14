@@ -23,9 +23,9 @@ public class ClientHttp {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.err.println(response);
+
         String json = response.body();
-        System.out.println(json);
+
         return json;
     }
 }

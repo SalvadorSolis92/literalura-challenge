@@ -36,7 +36,7 @@ public class Principal {
         while (opcion != 0) {
             var menu = """
                      (っ◕‿◕)っ Bienvenido
-                    1 - Buscar libro por titulo
+                    1 - Buscar libro por título
                     2 - Listar libros registrados
                     3 - Listar autores registrados
                     4 - Listar autores vivos en un año determinado
@@ -60,6 +60,12 @@ public class Principal {
                     break;
                 case 2:
                     this.mostrarLibrosRegistrados();
+                    break;
+                case 3:
+                    this.listarAutoresRegistrados();
+                    break;
+                case 4:
+                    this.listarAutoresRegistradosVivosAnio();
                     break;
                 case 5:
                     this.listarLibrosPorIdioma();
@@ -159,6 +165,34 @@ public class Principal {
             System.out.println("No se encontrarón libros en la base de datos\n\n");
         }
 
+    }
+
+    private void listarAutoresRegistrados() {
+
+        List<Autor> autores = this.repostoryAutores.findAll();
+
+        if (autores != null){
+            autores.stream()
+                    .sorted(Comparator.comparing(Autor::getNombre))
+                    .forEach(System.out::println);
+        }else{
+            System.out.println("No se han registrado autores en la base de datos");
+        }
+    }
+
+    private void listarAutoresRegistradosVivosAnio(){
+        System.out.println("Ingresa el año de busqueda");
+        var anioBusqueda = teclado.nextInt();
+
+        List<Autor> autores = this.repostoryAutores.findAllAnioLive(anioBusqueda);
+
+        if (autores != null){
+            autores.stream()
+                    .sorted(Comparator.comparing(Autor::getAnioNacimiento))
+                    .forEach(System.out::println);
+        }else{
+            System.out.println("No se encontrarón resultados de autores vivos en el año " + anioBusqueda);
+        }
     }
 
 }
