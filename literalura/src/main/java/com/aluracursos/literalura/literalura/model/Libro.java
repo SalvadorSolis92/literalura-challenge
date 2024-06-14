@@ -18,26 +18,11 @@ public class Libro implements Serializable {
     @Column(name = "titulo")
     private String titulo;
 
-    @Column(name = "subtitulos")
-    private List<String> subtitulos;
-
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Autor> autores;
 
-    @Column(name = "estanteria")
-    private List<String> estanteria;
-
-    @Column(name = "lenguajes")
-    private List<String> lenguajes;
-
-    @Column(name = "copyright")
-    private boolean copyright;
-
-    @Column(name = "mediaType")
-    private String mediaType;
-
-    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Formato> formatos;
+    @Column(name = "lenguaje")
+    private Lenguaje lenguaje;
 
     @Column(name = "conteo_descargas")
     private Long conteoDescargas;
@@ -48,11 +33,7 @@ public class Libro implements Serializable {
 
     public Libro(DatosLibro datosLibro){
         this.titulo = datosLibro.titulo();
-        this.subtitulos = datosLibro.subtitulos();
-        this.estanteria = datosLibro.estanterias();
-        this.lenguajes = datosLibro.idiomas();
-        this.copyright = datosLibro.copyright();
-        this.mediaType = datosLibro.mediaType();
+        this.lenguaje =  Lenguaje.fromString(datosLibro.idiomas().get(0));
         this.conteoDescargas = datosLibro.conteoDescargas() != null ? datosLibro.conteoDescargas() : 0;
     }
 
@@ -72,14 +53,6 @@ public class Libro implements Serializable {
         this.titulo = titulo;
     }
 
-    public List<String> getSubtitulos() {
-        return subtitulos;
-    }
-
-    public void setSubtitulos(List<String> subtitulos) {
-        this.subtitulos = subtitulos;
-    }
-
     public List<Autor> getAutores() {
         return autores;
     }
@@ -88,44 +61,12 @@ public class Libro implements Serializable {
         this.autores = autores;
     }
 
-    public List<String> getEstanteria() {
-        return estanteria;
+    public Lenguaje getLenguaje() {
+        return lenguaje;
     }
 
-    public void setEstanteria(List<String> estanteria) {
-        this.estanteria = estanteria;
-    }
-
-    public List<String> getLenguajes() {
-        return lenguajes;
-    }
-
-    public void setLenguajes(List<String> lenguajes) {
-        this.lenguajes = lenguajes;
-    }
-
-    public boolean isCopyright() {
-        return copyright;
-    }
-
-    public void setCopyright(boolean copyright) {
-        this.copyright = copyright;
-    }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
-
-    public List<Formato> getFormatos() {
-        return formatos;
-    }
-
-    public void setFormatos(List<Formato> formatos) {
-        this.formatos = formatos;
+    public void setLenguaje(Lenguaje lenguaje) {
+        this.lenguaje = lenguaje;
     }
 
     public Long getConteoDescargas() {
@@ -138,15 +79,13 @@ public class Libro implements Serializable {
 
     @Override
     public String toString() {
+        //Datos solicitados en el plan de trello
         return "------------------------------"
                 + "Titulo: " + this.titulo
-                + "\nIdiomas: " + this.lenguajes.stream().collect(Collectors.joining(", "))
-                + "\nAutores: " + this.autores.stream().map(Autor::toString).collect(Collectors.joining(", "))
-                + "\nEstanteria: " + this.estanteria.stream().collect(Collectors.joining(", "))
-                + "\nCopyright: " + copyright
-                + "\nMedia Type: " + mediaType
-                + "\nformatos: " + formatos
-                + "\nConteo de descargas: " + conteoDescargas
+                + "\nAutor(es): " + this.autores.stream().map(Autor::toString).collect(Collectors.joining(", "))
+                + "\nIdiomas: " + this.lenguaje
+                + "\nNúmero de descargas: " + conteoDescargas
                 + "\n------------------------------------------------------------\n\n";
+
     }
 }

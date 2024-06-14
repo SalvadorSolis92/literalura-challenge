@@ -8,6 +8,7 @@ import com.aluracursos.literalura.literalura.util.ConvierteDatos;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -114,18 +115,19 @@ public class Principal {
     private void buscarLibroPorTitulo(){
         DatosBusqueda librosEncontrados = obtenerDatosPorTitulo();
 
-        if(librosEncontrados.numResultados() > 0){
-            for (DatosLibro datos : librosEncontrados.libros()){
-                //Datos del libro
-                Libro libro = this.repository.save(new Libro(datos));
-                //Datos de autores
-                List<Autor> autores = datos.autores().stream()
-                        .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion()))
-                        .collect(Collectors.toList());
-                autores.forEach(a -> a.setLibro(libro));//relacionar el autor con el libro
-                autores.forEach(a -> this.repostoryAutores.save(a));//guardar datos del autor
-            }
+        Optional<DatosLibro> datos = librosEncontrados.libros().stream()
+                .findFirst();
 
+        if(datos.isPresent()){
+            var datosLibro = datos.get();
+            //Datos del libro
+            Libro libro = this.repository.save(new Libro(datosLibro));
+            //Datos de autores
+            List<Autor> autores = datosLibro.autores().stream()
+                    .map(a -> new Autor(a.nombre(), a.anioNacimiento(), a.anioDefuncion()))
+                    .collect(Collectors.toList());
+            autores.forEach(a -> a.setLibro(libro));//relacionar el autor con el libro
+            autores.forEach(a -> this.repostoryAutores.save(a));//guardar datos del autor
         }else{
             System.out.println("No se encontrarón resultados, prueba con otro titulo");
         }
