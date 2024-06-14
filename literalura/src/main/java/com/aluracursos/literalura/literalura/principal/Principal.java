@@ -61,6 +61,9 @@ public class Principal {
                 case 2:
                     this.mostrarLibrosRegistrados();
                     break;
+                case 5:
+                    this.listarLibrosPorIdioma();
+                    break;
                 case 0:
                     mensajeDespedida();
                     break;
@@ -140,6 +143,22 @@ public class Principal {
         librosRegistrados.stream()
                 .sorted(Comparator.comparing(Libro::getTitulo))
                 .forEach(System.out::println);
+    }
+
+    private void listarLibrosPorIdioma() {
+        System.out.println("Escriba el idioma del libro que desea buscar");
+        var idiomaTeclado = teclado.nextLine();
+        var idioma = Lenguaje.fromEspaniol(idiomaTeclado);
+
+        List<Libro> libros = this.repository.findAllByLenguaje(idioma);
+
+        if (!libros.isEmpty()){
+            System.out.println("Los libros de idioma: " + idiomaTeclado);
+            libros.forEach(System.out::println);
+        }else {
+            System.out.println("No se encontrarón libros en la base de datos\n\n");
+        }
+
     }
 
 }
