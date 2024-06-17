@@ -10,4 +10,6 @@ public interface AutoresRepostory extends JpaRepository<Autor, Long> {
 
     @Query(value = "SELECT a FROM Autor a WHERE a.anioNacimiento <= :anioBusqueda AND a.anioDefuncion >= :anioBusqueda")
     List<Autor> findAllAnioLive(int anioBusqueda);
+
+    List<Autor> findByAnioNacimientoLessThanEqualAndAnioDefuncionGreaterThanEqual(int limiteInferior, int limiteSuperior);
 }

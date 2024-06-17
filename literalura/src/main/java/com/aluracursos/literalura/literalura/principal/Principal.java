@@ -184,7 +184,8 @@ public class Principal {
         System.out.println("Ingresa el año de busqueda");
         var anioBusqueda = teclado.nextInt();
 
-        List<Autor> autores = this.repostoryAutores.findAllAnioLive(anioBusqueda);
+        //List<Autor> autores = this.repostoryAutores.findAllAnioLive(anioBusqueda);
+        List<Autor> autores = this.repostoryAutores.findByAnioNacimientoLessThanEqualAndAnioDefuncionGreaterThanEqual(anioBusqueda,anioBusqueda);
 
         if (autores != null){
             autores.stream()
